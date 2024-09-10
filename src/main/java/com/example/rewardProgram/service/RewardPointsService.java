@@ -1,5 +1,6 @@
 package com.example.rewardProgram.service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.annotation.RequestScope;
 
 import com.example.rewardProgram.entity.Transactions;
@@ -80,7 +82,7 @@ public class RewardPointsService  {
 	 @Transactional
 	public String  addTransactionDetails(TransactionRequest transactionRequest) throws Exception {
 		Transactions transactionDAO = new Transactions();
-		
+		validate(transactionRequest);
 		try {
 		transactionDAO.setUsername(transactionRequest.getUserName());
 		transactionDAO.setAmount(transactionRequest.getAmount());
@@ -88,13 +90,44 @@ public class RewardPointsService  {
 		//transRepository.save(transactionDAO);
 		transRepository.saveAndFlush(transactionDAO);
 		
-		return "added transaction";
+		return "Transaction added succssfully";
 		} catch(Exception e) {
 			 throw new Exception(e.getMessage());
 		}
 		
 	}
-	 @Transactional
+	 private void validate(TransactionRequest transactionRequest) {
+		if(transactionRequest.getAmount()<=0) {
+			throw new IllegalArgumentException("Amount should not be 0/Negative value");
+		}else if(!StringUtils.hasLength(transactionRequest.getUserName()) ) {
+			throw new IllegalArgumentException("user/customer name should not be empty");
+		}else if(!StringUtils.hasLength(transactionRequest.getTransactionDate())) {
+			throw new IllegalArgumentException("date name should not be empty");
+		}
+		if(!validateDate(transactionRequest.getTransactionDate())) {
+			throw new IllegalArgumentException("date format is incorrect, follow yyyy-mm-dd format");
+		}
+		
+		
+		
+	}
+
+
+	private Boolean validateDate(String transactionDate) {
+		Boolean valid=false;
+		try{
+			LocalDate.parse(transactionDate);
+			 valid=true;
+		}catch(Exception e ){
+			valid=false;
+		}
+			
+	return valid;
+		
+	}
+
+
+	@Transactional
 	public List<Transactions>  fetchAllTransactions() {
 		return transRepository.findAll();
 	}

@@ -47,22 +47,6 @@ public class RewardPointsServiceTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(rewardPointsService).build();
 	}
 	
-	@Test
-	public void addTransactionDetails_test() {
-		rewardPointsService = new RewardPointsService();
-		TransactionRequest transactionRequest= new TransactionRequest();
-		
-		 
-		transactionRequest.setAmount(20.0);
-		transactionRequest.setUserName("mike");
-		transactionRequest.setTransactionDate("2024-08-03");
-		Transactions transactionDAO = new Transactions();
-		transactionDAO.setAmount(20.0);
-		transactionDAO.setUsername("mike");
-		transactionDAO.setTransactionDate(LocalDate.parse("2024-08-03"));
-	//	when(transRepository.saveAndFlush(Mockito.any())).thenReturn(null);
-	//	rewardPointsService.addTransactionDetails(transactionRequest);
-	}
 	@Test 
 	public void calculatePoints_test() {
 		rewardPointsService = new RewardPointsService();

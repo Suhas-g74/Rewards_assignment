@@ -37,7 +37,10 @@ public class RewardPointsController {
 	public ResponseEntity<String> addingTransactionDetails(@RequestBody TransactionRequest transactionRequest) {
 		try{
 			return ResponseEntity.ok(rewardPointsService.addTransactionDetails(transactionRequest));
-		}catch(Exception e){
+		}catch(IllegalArgumentException e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		catch(Exception e){
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
