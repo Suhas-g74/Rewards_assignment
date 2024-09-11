@@ -20,7 +20,7 @@ import com.example.rewardProgram.service.RewardPointsService;
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/")
 public class RewardPointsController {
 	@Autowired
 	private RewardPointsService rewardPointsService;
