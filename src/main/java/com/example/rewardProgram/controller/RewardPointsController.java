@@ -18,13 +18,19 @@ import com.example.rewardProgram.model.TransactionData;
 import com.example.rewardProgram.model.TransactionRequest;
 import com.example.rewardProgram.service.RewardPointsService;
 
-
+/**
+ * This is the controller class which contains API to save  and get transaction details. Also contains API to calculate
+ * reward points 
+ */
 @RestController
 @RequestMapping("/api/")
 public class RewardPointsController {
 	@Autowired
 	private RewardPointsService rewardPointsService;
-
+	/**
+	 * This returns reward points gained by particular customer 
+	 * @param customername should be passed to obtain points
+	 */
 	@RequestMapping(value="v1/getRewardPoints",method = RequestMethod.GET)
 	public ResponseEntity<?>  calculateRewardPoints(@RequestBody(required = true) RewardRequest request) {
 		try {
@@ -33,6 +39,9 @@ public class RewardPointsController {
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	}
+	/**
+	 * This method saves transaction details into database
+	 */
 	@RequestMapping(value="v1/saveTransaction",method = RequestMethod.POST)
 	public ResponseEntity<String> addingTransactionDetails(@RequestBody TransactionRequest transactionRequest) {
 		try{
@@ -44,7 +53,9 @@ public class RewardPointsController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+	/**
+	 * This method fetches all transaction details stored in database
+	 */
 	@RequestMapping(value="v1/getTransactions",method = RequestMethod.GET)
 	public ResponseEntity<?> getTransactionDetails() {
 		try{

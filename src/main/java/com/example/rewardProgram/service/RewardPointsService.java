@@ -62,7 +62,9 @@ public class RewardPointsService  {
 			return rewardResponse;
 		}
 	}
-	
+	/**
+	 * This method calculates reward point for particular transaction
+	 */
 	
 	public Double calculatePoints(Double amount) {
 		
