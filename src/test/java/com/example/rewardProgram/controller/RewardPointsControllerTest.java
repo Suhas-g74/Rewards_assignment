@@ -1,24 +1,19 @@
 package com.example.rewardProgram.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,7 +27,6 @@ import com.example.rewardProgram.service.RewardPointsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 
 public class RewardPointsControllerTest {
@@ -46,22 +40,14 @@ public class RewardPointsControllerTest {
 	@InjectMocks
 	private RewardPointsController rewardPointsController;
 
-	/**
-	 * This method is used to initialize the test environment and set up any
-	 * necessary components required for the tests to run correctly.
-	 */
+	
 	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.openMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(rewardPointsController).build();
 	}
 
-	/**
-	 * The testCreateTransaction_Success method is a JUnit test case designed to
-	 * verify the successful creation of a transaction records
-	 * 
-	 * @throws Exception
-	 */
+	
 	@Test
 	public void addingTransactionDetails_Test() throws Exception {
 		TransactionRequest transactionRequest= new TransactionRequest();
@@ -81,13 +67,7 @@ public class RewardPointsControllerTest {
 		assertEquals(200, result.getResponse().getStatus());
 	}
 
-	/**
-	 * The below function designed to convert a Java object into its JSON string
-	 * representation using the Jackson library
-	 * 
-	 * @param obj
-	 * @return
-	 */
+	
 	private String asJsonString(Object obj) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
