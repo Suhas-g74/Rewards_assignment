@@ -1,8 +1,6 @@
 package com.example.rewardProgram.service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,12 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.annotation.RequestScope;
 
 import com.example.rewardProgram.entity.Transactions;
 import com.example.rewardProgram.model.RewardRequest;
 import com.example.rewardProgram.model.RewardResponse;
-import com.example.rewardProgram.model.TransactionData;
 import com.example.rewardProgram.model.TransactionRequest;
 import com.example.rewardProgram.repository.transactionRepository;
 
