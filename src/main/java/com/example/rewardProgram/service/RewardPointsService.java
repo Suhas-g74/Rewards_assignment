@@ -32,22 +32,23 @@ public class RewardPointsService  {
 	@Transactional
 	public RewardResponse  calculateRewardPoints(RewardRequest request) {
 		LocalDate date1= LocalDate.now();
+		Integer months=request.getNoOfMonths();
 		Integer totalPointsEarned=0;
+
 		HashMap<String, Integer>  monthMap= new HashMap<>();
 		try {	
-		List<Transactions> listOfTransactions=transRepository.findAll();
-		for (int i=1;i<=3;i++) {
-			int j=i;
-		List<Double> pointsEarnedForTransaction=listOfTransactions.stream()
-				.filter(x->x.getUsername().equalsIgnoreCase(request.getCustomerName()))
-				.filter(x->x.getTransactionDate().isAfter(date1.minusMonths(j)))
-				.filter(x->x.getTransactionDate().isBefore(date1.minusMonths(j-1)))
+		List<Transactions> listOfTransactions=transRepository
+				.findByUsername(request.getCustomerName());
+		for (int i=1;i<=months;i++) {
+			int j=i;	
+			Integer totalPointsForMonth=listOfTransactions.stream()
+				.filter(x->(x.getTransactionDate().isAfter(date1.minusMonths(j)) 
+						&& x.getTransactionDate().isBefore(date1.minusMonths(j-1))))
 				.map(x->calculatePoints(x.getAmount()))
-				.collect(Collectors.toList());
-		Integer totalPointsForMonth=pointsEarnedForTransaction.stream()
 				.mapToInt(y->y.intValue()).sum();
 		monthMap.put(date1.minusMonths(i).getMonth().toString(),totalPointsForMonth);
 		totalPointsEarned=totalPointsEarned+totalPointsForMonth;
+		
 		}
 		rewardResponse.setCustomerName(request.getCustomerName());
 		rewardResponse.setTotalRewardPoints(totalPointsEarned);

@@ -5,6 +5,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class RewardRequest {
 	private String customerName;
+	private Integer noOfMonths;
+
+	public Integer getNoOfMonths() {
+		return noOfMonths;
+	}
+
+	public void setNoOfMonths(Integer noOfMonths) {
+		this.noOfMonths = noOfMonths;
+	}
 
 	public String getCustomerName() {
 		return customerName;
