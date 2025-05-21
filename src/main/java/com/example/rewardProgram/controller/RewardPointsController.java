@@ -3,9 +3,11 @@ package com.example.rewardProgram.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.rewardProgram.model.RewardRequest;
@@ -24,40 +26,39 @@ public class RewardPointsController {
 	/**
 	 * This returns reward points gained by particular customer 
 	 * @param customername should be passed to obtain points
+	 * @throws Exception 
 	 */
 	@RequestMapping(value="v1/getRewardPoints",method = RequestMethod.GET)
-	public ResponseEntity<?>  calculateRewardPoints(@RequestBody(required = true) RewardRequest request) {
-		try {
+	public ResponseEntity<?>  calculateRewardPoints(@RequestBody(required = true) RewardRequest request) throws Exception {
 		return ResponseEntity.ok(rewardPointsService.calculateRewardPoints(request));
-	}catch(Exception e){
-		return ResponseEntity.badRequest().body(e.getMessage());
-	}
 	}
 	/**
 	 * This method saves transaction details into database
+	 * @throws Exception 
 	 */
 	@RequestMapping(value="v1/saveTransaction",method = RequestMethod.POST)
-	public ResponseEntity<String> addingTransactionDetails(@RequestBody TransactionRequest transactionRequest) {
-		try{
-			return ResponseEntity.ok(rewardPointsService.addTransactionDetails(transactionRequest));
-		}catch(IllegalArgumentException e){
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-		catch(Exception e){
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	public ResponseEntity<String> addingTransactionDetails(@RequestBody TransactionRequest transactionRequest) throws Exception {
+		return ResponseEntity.ok(rewardPointsService.addTransactionDetails(transactionRequest));
 	}
 	/**
-	 * This method fetches all transaction details stored in database
+	 * This method fetches all transaction details for particular customer stored in database
 	 */
 	@RequestMapping(value="v1/getTransactions",method = RequestMethod.GET)
-	public ResponseEntity<?> getTransactionDetails() {
-		try{
-		return ResponseEntity.ok(rewardPointsService.fetchAllTransactions());
-	}catch(Exception e){
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-				body(e.getMessage());
+	public ResponseEntity<?> getTransactionDetails(@RequestParam("customerName") String  custName ) {
+		return ResponseEntity.ok(rewardPointsService.fetchAllTransactions(custName));
 	}
-	}
-	
+	/**
+	 * This method handles all illegal argument exceptions
+	 */
+	 @ExceptionHandler(IllegalArgumentException.class)
+	    public ResponseEntity<String> handleCustomException(IllegalArgumentException e) {
+	        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+	 /**
+		 * This method to handle all run time exceptions
+		 */ 
+	 @ExceptionHandler(Exception.class)
+	    public ResponseEntity<String> handleUnexpectedException(Exception e) {
+	        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 }

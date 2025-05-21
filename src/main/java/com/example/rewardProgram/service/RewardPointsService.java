@@ -25,17 +25,18 @@ public class RewardPointsService  {
 	@Autowired
 	private RewardResponse rewardResponse;
 	
-	
-	// no of transactions
-	//calculate rewards for each
-	// monthly total and total of all 3 months
+	/**
+	 * This method calculates Total reward points and reward points earned on Monthly Basis,
+	 *  for the required number of Months shared in request. 
+	 */
 	@Transactional
-	public RewardResponse  calculateRewardPoints(RewardRequest request) {
+	public RewardResponse  calculateRewardPoints(RewardRequest request) throws Exception {
 		LocalDate date1= LocalDate.now();
 		Integer months=request.getNoOfMonths();
 		Integer totalPointsEarned=0;
 
 		HashMap<String, Integer>  monthMap= new HashMap<>();
+		validateRewardRequest(request);
 		try {	
 		List<Transactions> listOfTransactions=transRepository
 				.findByUsername(request.getCustomerName());
@@ -48,15 +49,13 @@ public class RewardPointsService  {
 				.mapToInt(y->y.intValue()).sum();
 		monthMap.put(date1.minusMonths(i).getMonth().toString(),totalPointsForMonth);
 		totalPointsEarned=totalPointsEarned+totalPointsForMonth;
-		
 		}
 		rewardResponse.setCustomerName(request.getCustomerName());
 		rewardResponse.setTotalRewardPoints(totalPointsEarned);
 		rewardResponse.setMonthlyRewards(monthMap);
 		return rewardResponse;
 		}catch(Exception e) {
-			
-			return rewardResponse;
+			throw new Exception("Error occurred during reward calculation:"+e.getMessage());
 		}
 	}
 	/**
@@ -78,15 +77,17 @@ public class RewardPointsService  {
 		}
 		return points;
 	}
+	/**
+	 * This method saves transaction details into database
+	 */
 	 @Transactional
-	public String  addTransactionDetails(TransactionRequest transactionRequest) throws Exception {
+	public String  addTransactionDetails(TransactionRequest transactionRequest) throws Exception  {
 		Transactions transactionDAO = new Transactions();
 		validate(transactionRequest);
 		try {
 		transactionDAO.setUsername(transactionRequest.getUserName());
 		transactionDAO.setAmount(transactionRequest.getAmount());
 		transactionDAO.setTransactionDate(LocalDate.parse(transactionRequest.getTransactionDate()));
-		//transRepository.save(transactionDAO);
 		transRepository.saveAndFlush(transactionDAO);
 		
 		return "Transaction added succssfully";
@@ -95,7 +96,11 @@ public class RewardPointsService  {
 		}
 		
 	}
-	 private void validate(TransactionRequest transactionRequest) {
+	 /**
+	  * Below method saves validates transaction details sent in request
+	  */	 
+
+private void validate(TransactionRequest transactionRequest) {
 		if(transactionRequest.getAmount()<=0) {
 			throw new IllegalArgumentException("Amount should not be 0/Negative value");
 		}else if(!StringUtils.hasLength(transactionRequest.getUserName()) ) {
@@ -107,11 +112,7 @@ public class RewardPointsService  {
 			throw new IllegalArgumentException("date format is incorrect, follow yyyy-mm-dd format");
 		}
 		
-		
-		
 	}
-
-
 	private Boolean validateDate(String transactionDate) {
 		Boolean valid=false;
 		try{
@@ -124,10 +125,24 @@ public class RewardPointsService  {
 	return valid;
 		
 	}
+	/**
+	  * Below method saves validates reward request details.
+	  */
+	private void validateRewardRequest(RewardRequest request) {
+		if(!StringUtils.hasLength(request.getCustomerName())) {
+			throw new IllegalArgumentException("user/customer name should not be empty");
+		}else if(request.getNoOfMonths()<=0) {
+			throw new IllegalArgumentException("Month should not be 0/Negative value");
+		}}
 
-
+	/**
+	  * This method fetch transaction details for the requested Customer.
+	  */
 	@Transactional
-	public List<Transactions>  fetchAllTransactions() {
-		return transRepository.findAll();
+	public List<Transactions>  fetchAllTransactions(String customerName) {
+	if(!StringUtils.hasLength(customerName) ) {
+			throw new IllegalArgumentException("user/customer name should not be empty");
+	}
+		return transRepository.findByUsername(customerName);
 	}
 }

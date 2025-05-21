@@ -86,15 +86,15 @@ public class RewardPointsControllerTest {
 		Transactions transaction2 = new Transactions();
 	
 		transaction1.setAmount(120.0);
-		transaction1.setUsername("mike");
+		transaction1.setUsername("Mike");
 		transaction1.setId(1);
 		
 		transaction2.setAmount(120.0);
-		transaction2.setUsername("mike");
+		transaction2.setUsername("Mike");
 		transaction2.setId(2);
 		List<Transactions> mockResponse = Arrays.asList(transaction1, transaction2);
 
-		when(rewardPointsService.fetchAllTransactions())
+		when(rewardPointsService.fetchAllTransactions("Mike"))
 				.thenReturn(mockResponse);
 
 		String expectedResponse = new ObjectMapper().writeValueAsString(mockResponse);
