@@ -30,23 +30,24 @@ public class RewardPointsService  {
 	 */
 	@Transactional
 	public RewardResponse  calculateRewardPoints(RewardRequest request) throws Exception {
-		LocalDate date1= LocalDate.now();
+		validateRewardRequest(request);
+		LocalDate todaysDate= LocalDate.now();
+		LocalDate billingDate= todaysDate.withDayOfMonth(6);// billing date is assumed as 6th of every month
 		Integer months=request.getNoOfMonths();
 		Integer totalPointsEarned=0;
-
 		HashMap<String, Integer>  monthMap= new HashMap<>();
-		validateRewardRequest(request);
+		
 		try {	
 		List<Transactions> listOfTransactions=transRepository
 				.findByUsername(request.getCustomerName());
 		for (int i=1;i<=months;i++) {
 			int j=i;	
 			Integer totalPointsForMonth=listOfTransactions.stream()
-				.filter(x->(x.getTransactionDate().isAfter(date1.minusMonths(j)) 
-						&& x.getTransactionDate().isBefore(date1.minusMonths(j-1))))
+				.filter(x->(x.getTransactionDate().isAfter(billingDate.minusMonths(j)) 
+						&& x.getTransactionDate().isBefore(billingDate.minusMonths(j-1))))
 				.map(x->calculatePoints(x.getAmount()))
 				.mapToInt(y->y.intValue()).sum();
-		monthMap.put(date1.minusMonths(i).getMonth().toString(),totalPointsForMonth);
+		monthMap.put(billingDate.minusMonths(i).getMonth().toString(),totalPointsForMonth);
 		totalPointsEarned=totalPointsEarned+totalPointsForMonth;
 		}
 		rewardResponse.setCustomerName(request.getCustomerName());

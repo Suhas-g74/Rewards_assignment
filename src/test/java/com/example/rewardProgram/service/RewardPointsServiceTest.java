@@ -95,19 +95,25 @@ public class RewardPointsServiceTest {
 	
 	@Test
 	public void calculateTotalRewardPoints_test() throws Exception {
-		Transactions firstRequest= new Transactions();
 		RewardRequest request= new RewardRequest();
 		request.setCustomerName("Mike");
 		request.setNoOfMonths(3);
-		LocalDate testDate= LocalDate.of(2025, 04, 03);
+		Transactions firstRequest= new Transactions();
+		LocalDate testDate= LocalDate.of(2025, 04, 13);
 		firstRequest.setAmount(120.0);
 		firstRequest.setUsername("Mike");
 		firstRequest.setTransactionDate(testDate);
+		Transactions secondRequest= new Transactions();
+		LocalDate testDate2= LocalDate.of(2025, 04, 15);
+		secondRequest.setAmount(102.0);
+		secondRequest.setUsername("Mike");
+		secondRequest.setTransactionDate(testDate2);
 		List<Transactions> dbResult= new ArrayList<>();
 		dbResult.add(firstRequest);
+		dbResult.add(secondRequest);
 		when(transRepository.findByUsername(any())).thenReturn(dbResult);
 		rewardResponse=rewardPointsService.calculateRewardPoints(request);
 
-		verify(rewardResponse,times(1)).setTotalRewardPoints(90);
+		verify(rewardResponse,times(1)).setTotalRewardPoints(144);
      }
 }
