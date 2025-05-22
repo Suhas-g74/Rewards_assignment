@@ -26,15 +26,28 @@ post http://localhost:8080/api/v1/saveTransaction
 ```
 body
 ```
-{
-    "userName": "JOHN",
-    "transactionDate": "2025-04-15",
-    "amount": 102
-}
+ {
+    "userName": "JOHN",
+    "transactionDate": "2025-04-15",
+    "amount": 103
+    }
 ```
 Response:
+```
 Transaction added succssfully
-  
+```
+if amount is 0 / negative exception thrown
+```
+ {
+    "userName": "JOHN",
+    "transactionDate": "2025-04-17",
+    "amount": 0
+    }
+```
+Response:
+```
+Amount should not be 0/Negative value
+```
 ### Get all transaction details
 Request:
 ```
@@ -47,15 +60,23 @@ Response:
         "id": 1,
         "username": "JOHN",
         "transactionDate": "2025-04-15",
-        "amount": 102.0
+        "amount": 103.0
     },
     {
         "id": 2,
         "username": "JOHN",
-        "transactionDate": "2025-04-15",
+        "transactionDate": "2025-04-17",
         "amount": 120.0
     }
 ]
+```
+Request: Error message is diaplayed as below if customer name is not given.
+```
+http://localhost:8080/api/v1/getTransactions?customerName=
+```
+Response: 
+```
+user/customer name should not be empty
 ```
 ### Calculate Reward points 
 Request: 
@@ -72,12 +93,28 @@ requestBody:
 Response:
 ```
 {
-    "totalRewardPoints": 144,
+    "totalRewardPoints": 146,
     "customerName": "JOHN",
     "monthlyRewards": {
-        "MARCH": 144,
+        "MARCH": 0,
         "FEBRUARY": 0,
-        "APRIL": 0
+        "APRIL": 146
     }
 }
+```
+
+Request: Error message is diaplayed as below if number of months is zero.
+```
+GET http://localhost:8080/api/v1/getRewardPoints
+```
+requestBody:
+```
+{
+    "customerName":"JOHN",
+    "noOfMonths":0
+}
+```
+Response:
+```
+Month should not be 0/Negative value
 ```

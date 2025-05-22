@@ -97,8 +97,7 @@ public class RewardPointsService  {
 	 /**
 	  * Below method saves validates transaction details sent in request
 	  */	 
-
-private void validate(TransactionRequest transactionRequest) {
+	 private void validate(TransactionRequest transactionRequest) {
 		if(transactionRequest.getAmount()<=0) {
 			throw new IllegalArgumentException("Amount should not be 0/Negative value");
 		}else if(!StringUtils.hasLength(transactionRequest.getUserName()) ) {
@@ -111,7 +110,8 @@ private void validate(TransactionRequest transactionRequest) {
 		}
 		
 	}
-	private Boolean validateDate(String transactionDate) {
+	 
+	 private Boolean validateDate(String transactionDate) {
 		Boolean valid=false;
 		try{
 			LocalDate.parse(transactionDate);

@@ -25,7 +25,7 @@ public class RewardPointsController {
 	private RewardPointsService rewardPointsService;
 	/**
 	 * This returns reward points gained by particular customer 
-	 * @param customername should be passed to obtain points
+	 * customerName and number Of Months should be passed to obtain points
 	 * @throws Exception 
 	 */
 	@RequestMapping(value="v1/getRewardPoints",method = RequestMethod.GET)
