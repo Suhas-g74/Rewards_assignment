@@ -3,7 +3,6 @@ package com.example.rewardProgram.service;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,8 +71,6 @@ public class RewardPointsService  {
 			points= (moreThanHundred.doubleValue() * 2)+50;
 		}else if(moreThanFifty>0){
 			points=moreThanFifty * 1;
-		}else {	
-			System.out.println("no reward points for "+amount);
 		}
 		return points;
 	}

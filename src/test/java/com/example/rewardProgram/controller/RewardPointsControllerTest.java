@@ -53,7 +53,7 @@ public class RewardPointsControllerTest {
 		TransactionRequest transactionRequest= new TransactionRequest();
 		transactionRequest.setAmount(20.0);
 		transactionRequest.setUserName("mike");
-		transactionRequest.setTransactionDate("2024-08-03");
+		transactionRequest.setTransactionDate("2025-05-03");
 
 		MvcResult result = mockMvc.perform(post("/api/v1/saveTransaction")
 				.contentType(MediaType.APPLICATION_JSON).content(asJsonString(transactionRequest)))

@@ -16,10 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.example.rewardProgram.entity.Transactions;
 import com.example.rewardProgram.model.RewardRequest;
@@ -32,9 +29,6 @@ import com.example.rewardProgram.repository.transactionRepository;
 @DataJpaTest
 public class RewardPointsServiceTest {
 	
-//	@Autowired
-//	private MockMvc mockMvc;
-	
 	@InjectMocks
 	RewardPointsService rewardPointsService;
 	
@@ -46,7 +40,6 @@ public class RewardPointsServiceTest {
 	
 	public void setup() {
 		MockitoAnnotations.openMocks(this);
-	//	mockMvc = MockMvcBuilders.standaloneSetup(rewardPointsService).build();
 	}
 	
 	@Test 
