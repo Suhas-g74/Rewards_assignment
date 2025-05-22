@@ -9,7 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-
+/**
+ * This is Entity class created for TRANSACTIONS table   
+ */
 @Entity
 @Data
 @Table(name="TRANSACTIONS")

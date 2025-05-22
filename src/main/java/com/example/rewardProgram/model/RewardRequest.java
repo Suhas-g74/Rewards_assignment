@@ -1,7 +1,9 @@
 package com.example.rewardProgram.model;
 
 import org.springframework.stereotype.Component;
-
+/**
+ * request model class used to fetch total rewards  
+ */
 @Component
 public class RewardRequest {
 	private String customerName;

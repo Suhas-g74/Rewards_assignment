@@ -3,7 +3,9 @@ package com.example.rewardProgram.model;
 import java.util.HashMap;
 
 import org.springframework.stereotype.Component;
-
+/**
+ * response model class used for rewards points  
+ */
 @Component
 public class RewardResponse {
 private Integer totalRewardPoints;

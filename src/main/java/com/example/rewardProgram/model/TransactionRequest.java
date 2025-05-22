@@ -3,7 +3,9 @@ package com.example.rewardProgram.model;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
-
+/**
+ * Transactions model used to fetch and save transactions details 
+ */
 @Data
 @Component
 public class TransactionRequest {
