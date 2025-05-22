@@ -51,8 +51,6 @@ public class RewardPointsControllerTest {
 	@Test
 	public void addingTransactionDetails_Test() throws Exception {
 		TransactionRequest transactionRequest= new TransactionRequest();
-		
-		 
 		transactionRequest.setAmount(20.0);
 		transactionRequest.setUserName("mike");
 		transactionRequest.setTransactionDate("2024-08-03");
@@ -61,9 +59,6 @@ public class RewardPointsControllerTest {
 				.contentType(MediaType.APPLICATION_JSON).content(asJsonString(transactionRequest)))
 				.andExpect(status().isOk())
 				.andReturn();
-
-		String response = result.getResponse().getContentAsString();
-		
 		assertEquals(200, result.getResponse().getStatus());
 	}
 
@@ -84,7 +79,6 @@ public class RewardPointsControllerTest {
 	public void getTransactionDetails_Test() throws Exception{
 		Transactions transaction1 = new Transactions();
 		Transactions transaction2 = new Transactions();
-	
 		transaction1.setAmount(120.0);
 		transaction1.setUsername("Mike");
 		transaction1.setId(1);
@@ -93,15 +87,13 @@ public class RewardPointsControllerTest {
 		transaction2.setUsername("Mike");
 		transaction2.setId(2);
 		List<Transactions> mockResponse = Arrays.asList(transaction1, transaction2);
-
 		when(rewardPointsService.fetchAllTransactions("Mike"))
 				.thenReturn(mockResponse);
-
 		String expectedResponse = new ObjectMapper().writeValueAsString(mockResponse);
-
-		MvcResult result = mockMvc.perform(get("/api/v1/getTransactions")).
-		andExpect(status().isOk()).
-		andReturn();
+		MvcResult result = mockMvc.perform(get("/api/v1/getTransactions")
+				.param("customerName", "Mike"))
+				.andExpect(status().isOk())
+				.andReturn();
 		assertEquals(expectedResponse,result.getResponse().getContentAsString());
 	}
 	
@@ -109,8 +101,7 @@ public class RewardPointsControllerTest {
 	public void calculateRewardPoints_Test() throws Exception {
 		RewardRequest rewardrequest= new RewardRequest();
 				rewardrequest.setCustomerName("mike");
-		
-
+				rewardrequest.setNoOfMonths(3);
 		MvcResult result = mockMvc.perform(get("/api/v1/getRewardPoints")
 				.contentType(MediaType.APPLICATION_JSON).content(asJsonString(rewardrequest)))
 				.andExpect(status().isOk())

@@ -92,7 +92,7 @@ public class RewardPointsService  {
 		
 		return "Transaction added succssfully";
 		} catch(Exception e) {
-			 throw new Exception(e.getMessage());
+			 throw new Exception("Error occurred while adding transaction details:"+e.getMessage());
 		}
 		
 	}
