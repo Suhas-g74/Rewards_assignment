@@ -21,11 +21,13 @@ Sample input and output examples
 request:
 post http://localhost:8080/api/v1/saveTransaction
 body
+```
 {
     "userName": "JOHN",
     "transactionDate": "2025-04-15",
     "amount": 102
 }
+```
 Response:
 Transaction added succssfully
   
